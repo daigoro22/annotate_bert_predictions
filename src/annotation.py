@@ -8,7 +8,7 @@ logger = setup_logger(__name__)
 
 option = st.selectbox(
     'choose a prediction file',
-    list(glob.glob('./predictions/*.jsonl'))
+    list(glob.glob('../predictions/*.jsonl'))
 )
 
 filename_an = f'{os.path.splitext(option)[0]}_an.jsonl'.replace('predictions','annotated')
