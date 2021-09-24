@@ -21,9 +21,12 @@ else:
 
 if 'class' not in _df.columns:
     _df['class']=list(range(len(_df)))
+if 'memo' not in _df.columns:
+    _df['memo']=''
 
 def save_df():
     _df['class'] = [st.session_state[f'{i}_c'] for i in range(len(_df))]
+    _df['memo'] = [st.session_state[f'{i}_m'] for i in range(len(_df))]
     _df.to_json(filename_an,orient='records',lines=True,force_ascii=False)
     logger.info(f'saved annotated file in {filename_an}')
 
@@ -35,8 +38,11 @@ while True:
         s1 = s1.lstrip('[CLS]')
         st.header(s1)
         st.header(s2)
-        key = f'{index}_c'
+
         init_value = _df.loc[index]['class'] if _df.loc[index]['class'] != [] else []
-        st.multiselect('含意関係の分類',list_class,init_value,key=key,on_change=save_df)
+        st.multiselect('含意関係の分類',list_class,init_value,key=f'{index}_c',on_change=save_df)
+        
+        init_memo = _df.loc[index]['memo'] if _df.loc[index]['memo'] != [] else []
+        st.text_area('メモ',value=init_memo,key=f'{index}_m',on_change=save_df)
     except StopIteration:
         break
